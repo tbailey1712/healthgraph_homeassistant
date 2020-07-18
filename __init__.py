@@ -1,0 +1,1 @@
+"""HealthGraph API Data Sensor."""
