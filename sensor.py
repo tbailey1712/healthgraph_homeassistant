@@ -16,7 +16,7 @@ from homeassistant.components.sensor import (PLATFORM_SCHEMA)
 from homeassistant.util import Throttle
 from homeassistant.helpers.entity import Entity
 
-__version__ = '0.1'
+__version__ = '0.2'
 
 CONF_API_KEY = 'api_key'
 CONF_NAME = 'name'
@@ -47,9 +47,10 @@ class HealthGraph(Entity):
         self._release = None
         self._snapshot = None
         self._lastupdated = None
-        self._totalRuns = 0
-        self._runDistance = None
-        self._averagePace = None
+        self._total_runs = 0
+        self._total_time = None
+        self._run_distance = None
+        self._average_pace = None
         self.update()
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
@@ -98,9 +99,10 @@ class HealthGraph(Entity):
             totalTime = str(timedelta(seconds=totalSeconds))
             _LOG.debug("Total Time: %s", totalTime )
             
-            self._totalRuns = runCount
-            self._runDistance = str(runningDistance)
-            self._averagePace = averagePace
+            self._total_runs = runCount
+            self._run_distance = str(runningDistance)
+            self._average_pace = averagePace
+            self._total_time = totalTime
             self._state = "Connected"
             """self._state = data[self.departure].get('prdctdn')        """
         except Exception as err:  
@@ -118,15 +120,19 @@ class HealthGraph(Entity):
 
     @property
     def total_runs(self):
-        return self._totalRuns
+        return self._total_runs
+
+    @property
+    def total_runs(self):
+        return self._total_time
 
     @property
     def running_distance(self):
-        return self._runDistance
+        return self._run_distance
 
     @property
     def average_pace(self):
-        return self._averagePace
+        return self._average_pace
 
     @property
     def icon(self):
@@ -135,9 +141,10 @@ class HealthGraph(Entity):
     @property
     def device_state_attributes(self):
         return {
-            'total_runs': self._totalRuns,
-            'running_distance': self._runDistance,
-            'average_pace': self._averagePace,
+            'total_runs': self._total_runs,
+            'total_time': self._total_time,
+            'running_distance': self._run_distance,
+            'average_pace': self._average_pace,
             'latest_type': self._latest_type,
             'latest': self._latest,
             'release': self._release,
