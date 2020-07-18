@@ -110,11 +110,11 @@ class HealthGraph(Entity):
         _LOG.debug(self._state)
     @property
     def state(self):
-        return self._api_key
+        return self._state
     
     @property
     def name(self):
-        return self._name
+        return "healthgraph." + self._name
 
     @property
     def total_runs(self):
@@ -135,6 +135,9 @@ class HealthGraph(Entity):
     @property
     def device_state_attributes(self):
         return {
+            'total_runs': self._totalRuns,
+            'running_distance': self._runDistance,
+            'average_pace': self._averagePace,
             'latest_type': self._latest_type,
             'latest': self._latest,
             'release': self._release,
