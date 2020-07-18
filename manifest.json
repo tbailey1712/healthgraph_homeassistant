@@ -1,0 +1,9 @@
+{
+    "domain": "healthgraph",
+    "name": "HealthGraph API",
+    "documentation": "https://github.com/tbailey1712",
+    "dependencies": [],
+    "codeowners": [
+      "@tbailey1712"
+    ]
+  }
