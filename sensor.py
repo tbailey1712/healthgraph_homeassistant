@@ -21,7 +21,8 @@ __version__ = '0.2'
 CONF_API_KEY = 'api_key'
 CONF_NAME = 'name'
 
-MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=10)
+# Put this in config
+MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=60)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_NAME): cv.string,
