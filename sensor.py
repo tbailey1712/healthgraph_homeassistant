@@ -44,10 +44,7 @@ class HealthGraph(Entity):
         self._name = config[CONF_NAME]
         self._state = None
         self._latest_type = None
-        self._latest = None
-        self._release = None
-        self._snapshot = None
-        self._lastupdated = None
+        self._last_updated = None
         self._total_time = None
         self._total_bike = 0
         self._bike_distance = 0
@@ -113,7 +110,10 @@ class HealthGraph(Entity):
             runningTime = str(timedelta(seconds=runningSeconds))
             _LOG.debug("Running Time: %s", runningTime )
             
-            averagePaceSeconds = runningSeconds / runningDistance
+            averagePaceSeconds = 0
+            if runningDistance > 0:
+                averagePaceSeconds = runningSeconds / runningDistance
+
             hours, remainder = divmod(averagePaceSeconds, 3600)
             minutes, seconds = divmod(remainder, 60)
             averagePace = str(int(minutes)) + ":" + str(int(seconds))
@@ -135,11 +135,13 @@ class HealthGraph(Entity):
             self._total_weights = weightCount
             self._total_time = totalTime
 
+            self._last_updated = today.strftime("%m-%d-%y %H:%M")
+
             self._state = "Connected"
             """self._state = data[self.departure].get('prdctdn')        """
         except Exception as err:  
             _LOG.warning("Exception calling HealthGraph API: %s", err)
-            traceback.print_exc(file=sys.stdout)
+            #traceback.print_exc(file=sys.stdout)
             self._state = "Failed"
         _LOG.debug(self._state)
     @property
@@ -189,7 +191,12 @@ class HealthGraph(Entity):
     @property
     def icon(self):
         return 'mdi:weight-lifter'
-    
+
+    @property
+    def last_updated(self):
+        return self._last_updated
+
+
     @property
     def device_state_attributes(self):
         return {
@@ -203,7 +210,5 @@ class HealthGraph(Entity):
             'bike_distance': self._bike_distance,
             'bike_time': self._bike_time,
             'latest_type': self._latest_type,
-            'latest': self._latest,
-            'release': self._release,
-            'snapshot': self._snapshot
+            'last_updated': self._last_updated
         }        
