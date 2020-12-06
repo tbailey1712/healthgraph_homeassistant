@@ -119,6 +119,7 @@ class HealthGraph(Entity):
             _LOG.debug("Running Distance: %s", str(runningDistance))
             runningTime = str(timedelta(seconds=runningSeconds))
             _LOG.debug("Running Time: %s", runningTime )
+
             
             averagePaceSeconds = 0
             if runningDistance > 0:
@@ -141,6 +142,9 @@ class HealthGraph(Entity):
             self._total_bike = bikeCount
             self._bike_distance = round(bikeDistance, 2)
             self._bike_time = str(timedelta(seconds=bikeSeconds))
+
+            self._total_swims = totalSwims
+            self._swim_time = str(timedelta(seconds=swimmingSeconds))
 
             self._total_weights = weightCount
             self._total_time = totalTime
