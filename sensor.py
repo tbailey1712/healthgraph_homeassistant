@@ -16,7 +16,7 @@ from homeassistant.components.sensor import (PLATFORM_SCHEMA)
 from homeassistant.util import Throttle
 from homeassistant.helpers.entity import Entity
 
-__version__ = '0.2'
+__version__ = '0.3'
 
 CONF_API_KEY = 'api_key'
 CONF_NAME = 'name'
@@ -50,6 +50,8 @@ class HealthGraph(Entity):
         self._bike_distance = 0
         self._bike_time = None
         self._total_runs = 0
+        self._total_swims = 0
+        self._swim_time = None
         self._run_distance = None
         self._run_time = None
         self._average_pace = None
@@ -82,6 +84,8 @@ class HealthGraph(Entity):
             bikeCount = 0
             bikeDistance = 0
             bikeSeconds = 0
+            totalSwims = 0
+            swimmingSeconds = 0
 
             for activity in payload['items']:
                 activityType = activity['type']
@@ -101,6 +105,12 @@ class HealthGraph(Entity):
                     bikeCount += 1
                     bikeDistance += (activity['total_distance'] * 0.000621371)
                     bikeSeconds += seconds
+                elif activityType == 'Swimming':
+                    _LOG.debug("Swimming")
+                    totalSwims +=1
+                    swimmingSeconds += seconds
+                else 
+                    _LOG.debug("Unrecognized Activity: " + activity)
 
             _LOG.debug("Total Seconds: %f", totalSeconds)
 
@@ -173,6 +183,14 @@ class HealthGraph(Entity):
         return self._run_time
 
     @property
+    def total_swims(self):
+        return self._total_swims
+
+    @property
+    def swim_time(self):
+        return self._swim_time
+
+    @property
     def average_pace(self):
         return self._average_pace
 
@@ -203,6 +221,8 @@ class HealthGraph(Entity):
             'total_runs': self._total_runs,
             'total_weights': self._total_weights,
             'total_time': self._total_time,
+            'total_swims' : self._total_swims,
+            'swim_time' : self._swim_time,
             'running_distance': self._run_distance,
             'running_time' : self._run_time,
             'average_pace': self._average_pace,
