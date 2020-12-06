@@ -109,7 +109,7 @@ class HealthGraph(Entity):
                     _LOG.debug("Swimming")
                     totalSwims +=1
                     swimmingSeconds += seconds
-                else 
+                else:
                     _LOG.debug("Unrecognized Activity: " + activity)
 
             _LOG.debug("Total Seconds: %f", totalSeconds)
