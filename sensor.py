@@ -62,12 +62,14 @@ class HealthGraph(Entity):
     def update(self):
         _LOG.info("Updating from HealthGraph API")
         today = datetime.today()
-        offset = (today.weekday() - 6) % 7
-        lastsundate = today-timedelta(days=offset)
-        sunday = lastsundate.strftime("%Y-%m-%d")
-        _LOG.debug("Last Sunday was %s", sunday)
+#        offset = (today.weekday() - 6) % 7
+#        lastsundate = today-timedelta(days=offset)
+	lastmondate = today - timedelta(days=today.weekday())
+	monday = lastmondate.strftime("%Y-%m-%d")
+#        sunday = lastsundate.strftime("%Y-%m-%d")
+        _LOG.debug("Last Monday was %s", monday)
 
-        url = "https://api.runkeeper.com/fitnessActivities?noEarlierThan={0}".format(sunday)
+        url = "https://api.runkeeper.com/fitnessActivities?noEarlierThan={0}".format(monday)
 
         head = {"authorization": self._api_key }
 
