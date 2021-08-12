@@ -64,8 +64,8 @@ class HealthGraph(Entity):
         today = datetime.today()
 #        offset = (today.weekday() - 6) % 7
 #        lastsundate = today-timedelta(days=offset)
-	lastmondate = today - timedelta(days=today.weekday())
-	monday = lastmondate.strftime("%Y-%m-%d")
+        lastmondate = today - timedelta(days=today.weekday())
+        monday = lastmondate.strftime("%Y-%m-%d")
 #        sunday = lastsundate.strftime("%Y-%m-%d")
         _LOG.debug("Last Monday was %s", monday)
 
